@@ -2,24 +2,17 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_instance" "demo-server" {
-    ami = "ami-0eaf7c3456e7b5b68"
-    instance_type = "t2.micro"
-    key_name = "portf-dev-nvir"
-    security_groups = [ "demo-sg" ]
-}
-
 resource "aws_security_group" "demo-sg" {
   name        = "demo-sg"
   description = "SSH Access"
   
   ingress {
-    description      = "Shh access"
+    description      = "SSH access"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    }
+  }
 
   egress {
     from_port        = 0
@@ -31,6 +24,12 @@ resource "aws_security_group" "demo-sg" {
 
   tags = {
     Name = "ssh-port"
-
   }
+}
+
+resource "aws_instance" "demo-server" {
+  ami             = "ami-0eaf7c3456e7b5b68"
+  instance_type   = "t2.micro"
+  key_name        = "portf-dev-nvir"
+  vpc_security_group_ids = [aws_security_group.demo-sg.id]
 }
