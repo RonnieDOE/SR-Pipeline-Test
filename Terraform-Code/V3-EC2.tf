@@ -31,6 +31,14 @@ resource "aws_security_group" "demo-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
     }
 
+  ingress {
+    description      = "Jenkins Browser Port"
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -40,7 +48,7 @@ resource "aws_security_group" "demo-sg" {
   }
 
   tags = {
-    Name = "ssh-prot"
+    Name = "ssh-port"
 
   }
 }
